@@ -28,6 +28,19 @@ A list with three elements:
 Read archival tag sensor data files.
 }
 \examples{
+# Read data collected by a CEFAS G5DST tag with pressure and temperature
+# sensors
+cefas_g5dst_press_temp <- system.file(
+  "extdata", "cefas_g5dst_pressure_temperature.csv",
+  package = "archivaltag"
+)
+read_file(
+  file = cefas_g5dst_press_temp,
+  manufacturer = "cefas technology",
+  model = "G5dst",
+  sensors = c("pressure", "temperature")
+)
+Check file (class and length)
 Check manufacturer (class and length)
 Check model (class and length)
 Check sensors (class)
