@@ -7,9 +7,10 @@
 read_file(file, manufacturer, model, sensors)
 }
 \arguments{
-\item{file}{A character}
+\item{file}{A character with the path to an archival tag data file.}
 
-\item{manufacturer}{A character vector of length 1 with the manufacturer of the tag.}
+\item{manufacturer}{A character vector of length 1 with the manufacturer of
+the tag.}
 
 \item{model}{A character vector of length 1 with the model of the tag.}
 
