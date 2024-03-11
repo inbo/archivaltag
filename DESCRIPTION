@@ -13,6 +13,7 @@ Authors@R: c(
   )
 Description: Functionalities to read archival tag data from several manufacturers, types and sensors.
 License: MIT + file LICENSE
+URL: https://github.com/inbo/archivaltag
 BugReports: https://github.com/inbo/archivaltag/issues
 Imports:
   cli
