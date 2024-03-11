@@ -1,22 +1,30 @@
+---
+output: github_document
+---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
 
 # archivaltag
 
 <!-- badges: start -->
-
 [![R-CMD-check](https://github.com/inbo/archivaltag/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/inbo/archivaltag/actions/workflows/R-CMD-check.yaml)
 [![test-coverage](https://github.com/inbo/archivaltag/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/inbo/archivaltag/actions/workflows/test-coverage.yaml)
 <!-- badges: end -->
 
-The goal of archivaltag is to read archival tag data. Such data are
-stored differently depending on the manufacturer and the model. Also,
-the data are different depending on the sensors built in.
+The goal of archivaltag is to read archival tag data. Such data are stored differently depending on the manufacturer and the model. Also, the data are different depending on the sensors built in.
 
 ## Installation
 
-You can install the development version of archivaltag from
-[GitHub](https://github.com/) with:
+You can install the development version of archivaltag from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -27,7 +35,8 @@ devtools::install_github("inbo/archivaltag")
 
 This is a basic example which shows you how to solve a common problem:
 
-``` r
+```{r example}
 library(archivaltag)
 ## basic example code
 ```
+
