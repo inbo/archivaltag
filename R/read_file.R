@@ -12,16 +12,19 @@
 #' - `daylog`: a tibble data.frame with daylog information
 #' - `sensor`: a tibble data.frame with sensor data
 #'
+#' @family read functions
+#'
 #' @export
 #'
 #' @examples
 #' # Read data collected by a CEFAS G5DST tag with pressure and temperature
 #' # sensors
 #' cefas_g5dst_press_temp <- system.file(
-#'   "extdata", "cefas_g5dst_pressure_temperature.csv",
+#'   "extdata",
+#'   "cefas_g5dst_pressure_temperature.csv",
 #'   package = "archivaltag"
 #' )
-#' read_file(
+#' archivaltag::read_file(
 #'   file = cefas_g5dst_press_temp,
 #'   manufacturer = "cefas technology",
 #'   model = "G5dst",
@@ -29,7 +32,7 @@
 #' )
 read_file <- function(file, manufacturer, model, sensors) {
 
-  #' Check file (class and length)
+  # Check file (class and length)
   if (!is.character(file)) {
     cli::cli_abort(
       "{.var file} must be a character.",
@@ -43,7 +46,7 @@ read_file <- function(file, manufacturer, model, sensors) {
     )
   }
 
-  #' Check manufacturer (class and length)
+  # Check manufacturer (class and length)
   if (!is.character(manufacturer)) {
     cli::cli_abort(
       "{.var manufacturer} must be a character.",
@@ -57,7 +60,7 @@ read_file <- function(file, manufacturer, model, sensors) {
     )
   }
 
-  #' Check model (class and length)
+  # Check model (class and length)
   if (!is.character(model)) {
     cli::cli_abort(
       "{.var model} must be a character.",
@@ -71,7 +74,7 @@ read_file <- function(file, manufacturer, model, sensors) {
     )
   }
 
-  #' Check sensors (class)
+  # Check sensors (class)
   if (!is.character(sensors)) {
     cli::cli_abort(
       "{.var sensors} must be a character vector.",
