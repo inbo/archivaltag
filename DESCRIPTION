@@ -1,12 +1,21 @@
 Package: archivaltag
-Title: What the Package Does (One Line, Title Case)
+Title: Read Archival Tag Data
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Authors@R: c(
+    person("Damiano", "Oldoni", email = "damiano.oldoni@inbo.be",
+           role = c("aut", "cre"), comment = c(ORCID = "0000-0003-3445-7562")),
+    person("Pieterjan", "Verhelst", email = "pieterjan.verhelst@inbo.be",
+           role = "aut", comment =  c(ORCID = "0000-0002-2610-6941")),
+    person("Research Institute for Nature and Forest (INBO)",
+           role = "cph", comment = "https://www.vlaanderen.be/inbo/en-gb/"),
+    person("LifeWatch Belgium",
+           role = "fnd", comment = "https://lifewatch.be")
+  )
+Description: Functionalities to read archival tag data from several manufacturers, types and sensors.
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
