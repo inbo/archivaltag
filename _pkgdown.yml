@@ -1,0 +1,16 @@
+url: https://inbo.github.io/archivaltag
+
+template:
+  bootstrap: 5
+
+navbar:
+  bg: dark
+
+authors:
+  Damiano Oldoni:
+    href: https://twitter.com/damianozingaro
+  Pieterjan Verhelst:
+    href: https://twitter.com/VerhelstPJ
+  LifeWatch Belgium:
+    href: https://lifewatch.be
+    html: "<img src='https://www.lifewatch.be/sites/lifewatch.be/themes/lifewatchportal/images/header_lw_logo.png' width=72>"
