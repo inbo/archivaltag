@@ -14,6 +14,8 @@ Authors@R: c(
 Description: Functionalities to read archival tag data from several manufacturers, types and sensors.
 License: MIT + file LICENSE
 BugReports: https://github.com/inbo/archivaltag/issues
+Imports:
+  cli
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.1
