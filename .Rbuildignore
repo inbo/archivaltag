@@ -3,4 +3,5 @@
 ^LICENSE\.md$
 ^\.github$
 ^README\.Rmd$
-^codecov\.yml$
+^codecov\.
+^_pkgdown\.yml$
