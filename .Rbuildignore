@@ -5,3 +5,4 @@
 ^README\.Rmd$
 ^codecov\.
 ^_pkgdown\.yml$
+^codemeta.json
