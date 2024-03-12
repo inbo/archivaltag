@@ -19,3 +19,4 @@ reference:
 - title: Read data
   contents:
   - has_concept("read functions")
+  - has_concept("supported tags")
