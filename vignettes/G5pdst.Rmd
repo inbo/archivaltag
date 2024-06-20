@@ -1,0 +1,81 @@
+---
+title: "G5pdst"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{G5pdst}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+This document contains instructions and pseudo code to parse and read archival tag data collected with G5pdst tags ([Cefas technology](https://cefastechnology.co.uk/)).
+
+### Metadata extraction
+
+Metadata start at the very begin of the file. We have only to define when metadata end. Metadata end if a line starts with a specific pattern which depends on the firmware version/build level.
+
+Firmware version and build level are the first important metadata we must detect. The lines containing such information start with `"Firmware Version No,"` and `"Firmware Build Level"` respectively. A way to extract the firmware version is using the following regex: `(?<=Firmware Version No,).*`. A similar regex for the firmware. In this document we will refer to the firmware version and build level in the form `version.build_level`, e.g. `3.40`. However, this is not mandatory. At the moment of writing we have analysed data with the following `firmware-version.build-level` pairs:
+
+- 3.80
+- 3.40
+- 2.70
+
+The string defining the end of the metadata section is:
+
+- 3.80 and 3.40: `"Daylog data for last deployment"`
+- 2.70: `"The following data are the Daylog contents"`
+
+Notice also that the end of the metadata section defines automatically the start of the daylog section.
+
+The next information to extract is the **tag ID**. It can be extract by using the regex: `(?<=Tag ID,)[A-Z|0-9]*` on the line starting with the string `"Tag ID"`.
+
+Another important information is the number of sensors. This information can be found in the line starting with `"No of sensors"`. Regex: `(?<=No of sensors ,).*`.
+
+For files with `firmware-version.build-level` = `3.80` the number of days the tag was alive is mentioned in the metadata. you can search for a line starting with `"Total Days Alive"`. Regex: `(?<=\= )\d+`.
+
+We limited to extract essential metadata information. Extracting other metadata is totally possible, of course. 
+
+Here below a pseudo code as recap. 
+
+```
+// Get firmware version and build level
+WHILE line NOT START WITH "TAG ID"
+  IF line START WITH "Firmware Version No,"
+      firmware = EXTRACT FROM line WITH regex "(?<=Firmware Version No,).*"
+  IF line START WITH "Firmware Version No,"
+      build_level = EXTRACT FROM line WITH regex "(?<=Firmware Build Level,).*"
+  READ next line
+version = firmware.build_level
+
+// Detect pattern (p) which ends the metadata section
+IF (version IN ("3.80", "3.40"))
+  p = "Daylog data for last deployment"
+ELSE IF (version == "2.70")
+  p = "The following data are the Daylog contents"
+ELSE ERROR: 'version not supported'
+
+// Parse the rest of metadata. It can be extended.
+WHILE line NOT START WITH p
+  
+  // TagID
+  IF line START WITH "Tag ID"
+    tagID = EXTRACT FROM line WITH regex "(?<=Tag ID,)[A-Z|0-9]*"
+  
+  // Number of sensors
+  IF line START WITH "No of sensors ,"
+    sensorsNo = EXTRACT FROM line WITH regex "(?<=No of sensors ,).*"
+  
+  // Total days deployment duration
+  IF line START WITH "Total Days Alive"
+    deployment_days = EXTRACT FROM line WITH regex "(?<=\= )\d+"
+      
+```
+
+
+
