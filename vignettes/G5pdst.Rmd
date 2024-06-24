@@ -14,9 +14,12 @@ knitr::opts_chunk$set(
 )
 ```
 
+## Introduction
+
 This document contains instructions and pseudo code to parse and read archival tag data collected with G5pdst tags ([Cefas technology](https://cefastechnology.co.uk/)).
 
-### Metadata extraction
+
+## Metadata
 
 Metadata start at the very begin of the file. We have only to define when metadata end. Metadata end if a line starts with a specific pattern which depends on the firmware version/build level.
 
@@ -35,7 +38,7 @@ Notice also that the end of the metadata section defines automatically the start
 
 The next information to extract is the **tag ID**. It can be extract by using the regex: `(?<=Tag ID,)[A-Z|0-9]*` on the line starting with the string `"Tag ID"`.
 
-Another important information is the number of sensors. This information can be found in the line starting with `"No of sensors"`. Regex: `(?<=No of sensors ,).*`.
+Another important information is the number of sensors embeded in the tag. This information can be found in the line starting with `"No of sensors"`. Regex: `(?<=No of sensors ,).*`.
 
 For files with `firmware-version.build-level` = `3.80` the number of days the tag was alive is mentioned in the metadata. you can search for a line starting with `"Total Days Alive"`. Regex: `(?<=\= )\d+`.
 
@@ -74,8 +77,73 @@ WHILE line NOT START WITH p
   // Total days deployment duration
   IF line START WITH "Total Days Alive"
     deployment_days = EXTRACT FROM line WITH regex "(?<=\= )\d+"
-      
 ```
 
 
+## Daylog
 
+The daylog section follows the metadata. The pattern used to find the end of the metadata section marks the begin of the daylog section. An empty line marks the end of the section. The first line after the pattern contains the column names. You can alternatively use a match condition as the line with the column names starts always with `"Mission Day"`. The column names and the data following in the other lines are comma separated.
+
+```
+WHILE line NOT EQUAL TO ""
+  
+  // Detect column names
+  IF line START WITH "Mission Day"
+    col_names = SPLIT line BY ","
+  // Detect and add data row
+  ELSE 
+    daylog += SPLIT line BY ","
+```
+
+
+## Data blocks
+
+The data blocks follow the daylog section. They are separated by deveral empty lines. Data blocks are numbered starting from 0. So, the first data block can be detected by a line called `"Data Block 0"`. A number of lines follow containing important sensor data related information, see below:
+
+```
+Data Block 0
+Start Time = 01/09/2008 00:01:00
+Stop Time = 01/09/2009 00:01:00
+Logging rate = 30
+Resolution = 12
+Data points available = 591736
+Date/Time Stamp,Pressure
+```
+
+In particular, the number of "data points available" can be useful as it allows us to identify the start and the end of block easily. Let's call it _n_, in our example above `n = 591736`. And also let's say that this line has number `i`. The column names of the data block are defined in the line `i+1` and are comma separated. The sensor variable(s) is/are defined next the "Date/Time Stamp,". In example above we know that the data block refers to `"Pressure"` values. In case of acceleration data, we will have three variables: `"Gee X,Gee Y, Gee Z"`. The last line of the data block has number `i+1+n`.
+
+A second data block, `Data Block 1`, can start after the end of the first data block. The two data blocks are separated by several empty lines.
+
+Notice that the number of measurements per time unit is sensor dependent. Here below an example from a tag measuring pressure and temperature:
+
+```
+Data Block 0
+Start Time = 01/09/2008 00:01:00
+Stop Time = 01/09/2009 00:01:00
+Logging rate = 30
+Resolution = 12
+Data points available = 591736
+Date/Time Stamp,Pressure
+01/09/2008 00:01:00,1.37
+01/09/2008 00:01:30,1.37
+01/09/2008 00:02:00,1.37
+01/09/2008 00:02:30,1.37
+...
+```
+
+```
+Data Block 1
+Start Time = 01/09/2008 00:01:00
+Stop Time = 01/09/2009 00:01:00
+Logging rate = 300
+Resolution = 12
+Data points available = 59172
+Date/Time Stamp,Temp
+01/09/2008 00:01:00,20.813
+01/09/2008 00:06:00,20.797
+01/09/2008 00:11:00,20.797
+01/09/2008 00:16:00,20.797
+...
+```
+
+Notice how the logging rate is the number of seconds between two measurements: 30 seconds for pressure and 5 minutes, or 300s, for temperature.
