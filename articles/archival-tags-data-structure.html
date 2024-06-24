@@ -43,7 +43,6 @@
   <div class="dropdown-menu" aria-labelledby="dropdown-articles">
     <a class="dropdown-item" href="../articles/archival-tags-data-structure.html">Archival tags data structure</a>
     <a class="dropdown-item" href="../articles/G5pdst.html">G5pdst</a>
-    <a class="dropdown-item" href="../articles/how-to-import-archival-tags.html">Archival tags data structure</a>
   </div>
 </li>
       </ul>
@@ -80,15 +79,21 @@
     
     
 <div class="section level2">
-<h2 id="archival-tag-data-structure">Archival tag data structure<a class="anchor" aria-label="anchor" href="#archival-tag-data-structure"></a>
+<h2 id="data-structure">Data structure<a class="anchor" aria-label="anchor" href="#data-structure"></a>
 </h2>
 <p>Archival tag data are typically <strong>text files</strong> created
-by tag manufacturers’ specific software.</p>
-<p>The content of these files could vary a lot. However, we can find
-three typical sections: - metadata - daylog - data blocks</p>
-<div class="section level3">
-<h3 id="metadata">Metadata<a class="anchor" aria-label="anchor" href="#metadata"></a>
-</h3>
+by the software provided by tag manufacturers.</p>
+<p>The content of these files can vary a lot. However, we can find three
+typical sections:</p>
+<ul>
+<li>metadata</li>
+<li>daylog</li>
+<li>data blocks</li>
+</ul>
+</div>
+<div class="section level2">
+<h2 id="metadata">Metadata<a class="anchor" aria-label="anchor" href="#metadata"></a>
+</h2>
 <p>Metadata contain general information about the tag
 (<code>tagID</code>), the number of sensors, software versions and
 start/end of deployment. Notice that the manufacturer is not always
@@ -125,9 +130,9 @@ No of sensors ,2</code></pre>
 explicitly and correctly mentioned in the metadata. For this reason we
 do not recommend to infer this information from the metadata.</p>
 </div>
-<div class="section level3">
-<h3 id="daylog">Daylog<a class="anchor" aria-label="anchor" href="#daylog"></a>
-</h3>
+<div class="section level2">
+<h2 id="daylog">Daylog<a class="anchor" aria-label="anchor" href="#daylog"></a>
+</h2>
 <p>The daylog section contains some general information at day level.
 It’s important to know also that this section is not always present.</p>
 <p>Example from a G5pdst tag (<a href="https://cefastechnology.co.uk/" class="external-link">Cefas technology</a>):</p>
@@ -136,9 +141,9 @@ Mission Day,Date,Max Temp,Min Temp,Max Depth,Min Depth,Batt Volts
 0,26/08/2008,28.094,23.891,0.62,0.12,3.13
 1,27/08/2008,29.406,23.313,1.37,0.12,3.13</code></pre>
 </div>
-<div class="section level3">
-<h3 id="data-blocks">Data blocks<a class="anchor" aria-label="anchor" href="#data-blocks"></a>
-</h3>
+<div class="section level2">
+<h2 id="data-blocks">Data blocks<a class="anchor" aria-label="anchor" href="#data-blocks"></a>
+</h2>
 <p>The data blocks contain the sensor information. At the moment we have
 encountered files containing one or two data blocks at most, i.e. tags
 with one or two sensors.</p>
@@ -168,7 +173,6 @@ Date/Time Stamp,Temp
 01/09/2008 00:06:00,20.797
 01/09/2008 00:11:00,20.797
 ...</code></pre>
-</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
