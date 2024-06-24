@@ -147,3 +147,12 @@ Date/Time Stamp,Temp
 ```
 
 Notice how the logging rate is the number of seconds between two measurements: 30 seconds for pressure and 5 minutes, or 300s, for temperature.
+
+## Issues
+
+Here below a list of issues found while reading file `A15881_04-09-2020.csv`. Even if we can exclude this file from being imported, it gives us an idea about the reasons behind potential parsing errors.
+
+- One or more commas at the end of each line. A cleaning was performed along the entire file by removing the regex pattern `",{5,}"` at each line.
+- Data block 0 doesn't exists, only `Data block 1`.
+- The datetime format is not constant along the data block. Both `d/m/y H:M` and `d/m/y H:M:S` are used. 
+- Some datetime values are not unique, but repeated in multiple rows. It occurs in rows with datetime format `d/m/y H:M`. Seconds can be added by assessing the number of rows per datetime: if there are 30 rows per minute, the datetime values are separated by 2 seconds, if 60 rows are present, they are separated by 1 second.
