@@ -14,16 +14,18 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Archival tag data structure
+## Data structure
 
-Archival tag data are typically **text files** created by tag manufacturers' specific software.
+Archival tag data are typically **text files** created by the software provided by tag manufacturers.
 
-The content of these files could vary a lot. However, we can find three typical sections:
+The content of these files can vary a lot. However, we can find three typical sections:
+
 - metadata
 - daylog
 - data blocks
 
-### Metadata
+
+## Metadata
 
 Metadata contain general information about the tag (`tagID`), the number of sensors, software versions and start/end of deployment. Notice that the manufacturer is not always mentioned in the metadata. We found that the most important information to parse archival tag text files are:
 
@@ -57,7 +59,8 @@ No of sensors ,2
 
 The type of sensors (pressure, temperature, ...) is NOT (always) explicitly and correctly mentioned in the metadata. For this reason we do not recommend to infer this information from the metadata.
 
-### Daylog
+
+## Daylog
 
 The daylog section contains some general information at day level. It's important to know also that this section is not always present.
 
@@ -70,7 +73,8 @@ Mission Day,Date,Max Temp,Min Temp,Max Depth,Min Depth,Batt Volts
 1,27/08/2008,29.406,23.313,1.37,0.12,3.13
 ```
 
-### Data blocks
+
+## Data blocks
 
 The data blocks contain the sensor information. At the moment we have encountered files containing one or two data blocks at most, i.e. tags with one or two sensors.
 
