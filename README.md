@@ -13,9 +13,10 @@ experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](h
 coverage](https://codecov.io/gh/inbo/archivaltag/branch/main/graph/badge.svg)](https://app.codecov.io/gh/inbo/archivaltag?branch=main)
 <!-- badges: end -->
 
-The goal of archivaltag is to read archival tag data. Such data are
-stored differently depending on the manufacturer and the model. Also,
-the data are different depending on the sensors built in.
+The goal of archivaltag is to provide information to read archival tag
+data. Such data are stored differently depending on the manufacturer and
+the model. Also, the data are different depending on the sensors built
+in.
 
 ## Installation
 
@@ -27,11 +28,6 @@ You can install the development version of archivaltag from
 devtools::install_github("inbo/archivaltag")
 ```
 
-## Example
-
-This is a basic example which shows you how to solve a common problem:
-
-``` r
-library(archivaltag)
-## basic example code
-```
+However, as reading R functions will be not developed at this stage, no
+real installation is needed. Check the vignette online for more
+information about reading data files of archival tags.
