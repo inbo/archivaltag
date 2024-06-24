@@ -1,0 +1,158 @@
+---
+title: "G5pdst"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{G5pdst}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+This document contains instructions and pseudo code to parse and read archival tag data collected with G5pdst tags ([Cefas technology](https://cefastechnology.co.uk/)).
+
+
+## Metadata
+
+Metadata start at the very begin of the file. We have only to define when metadata end. Metadata end if a line starts with a specific pattern which depends on the firmware version/build level.
+
+Firmware version and build level are the first important metadata we must detect. The lines containing such information start with `"Firmware Version No,"` and `"Firmware Build Level"` respectively. A way to extract the firmware version is using the following regex: `(?<=Firmware Version No,).*`. A similar regex for the firmware. In this document we will refer to the firmware version and build level in the form `version.build_level`, e.g. `3.40`. However, this is not mandatory. At the moment of writing we have analysed data with the following `firmware-version.build-level` pairs:
+
+- 3.80
+- 3.40
+- 2.70
+
+The string defining the end of the metadata section is:
+
+- 3.80 and 3.40: `"Daylog data for last deployment"`
+- 2.70: `"The following data are the Daylog contents"`
+
+Notice also that the end of the metadata section defines automatically the start of the daylog section.
+
+The next information to extract is the **tag ID**. It can be extract by using the regex: `(?<=Tag ID,)[A-Z|0-9]*` on the line starting with the string `"Tag ID"`.
+
+Another important information is the number of sensors embeded in the tag. This information can be found in the line starting with `"No of sensors"`. Regex: `(?<=No of sensors ,).*`.
+
+For files with `firmware-version.build-level` = `3.80` the number of days the tag was alive is mentioned in the metadata. you can search for a line starting with `"Total Days Alive"`. Regex: `(?<=\= )\d+`.
+
+We limited to extract essential metadata information. Extracting other metadata is totally possible, of course. 
+
+Here below a pseudo code as recap. 
+
+```
+// Get firmware version and build level
+WHILE line NOT START WITH "TAG ID"
+  IF line START WITH "Firmware Version No,"
+      firmware = EXTRACT FROM line WITH regex "(?<=Firmware Version No,).*"
+  IF line START WITH "Firmware Version No,"
+      build_level = EXTRACT FROM line WITH regex "(?<=Firmware Build Level,).*"
+  READ next line
+version = firmware.build_level
+
+// Detect pattern (p) which ends the metadata section
+IF (version IN ("3.80", "3.40"))
+  p = "Daylog data for last deployment"
+ELSE IF (version == "2.70")
+  p = "The following data are the Daylog contents"
+ELSE ERROR: 'version not supported'
+
+// Parse the rest of metadata. It can be extended.
+WHILE line NOT START WITH p
+  
+  // TagID
+  IF line START WITH "Tag ID"
+    tagID = EXTRACT FROM line WITH regex "(?<=Tag ID,)[A-Z|0-9]*"
+  
+  // Number of sensors
+  IF line START WITH "No of sensors ,"
+    sensorsNo = EXTRACT FROM line WITH regex "(?<=No of sensors ,).*"
+  
+  // Total days deployment duration
+  IF line START WITH "Total Days Alive"
+    deployment_days = EXTRACT FROM line WITH regex "(?<=\= )\d+"
+```
+
+
+## Daylog
+
+The daylog section follows the metadata. The pattern used to find the end of the metadata section marks the begin of the daylog section. An empty line marks the end of the section. The first line after the pattern contains the column names. You can alternatively use a match condition as the line with the column names starts always with `"Mission Day"`. The column names and the data following in the other lines are comma separated.
+
+```
+WHILE line NOT EQUAL TO ""
+  
+  // Detect column names
+  IF line START WITH "Mission Day"
+    col_names = SPLIT line BY ","
+  // Detect and add data row
+  ELSE 
+    daylog += SPLIT line BY ","
+```
+
+
+## Data blocks
+
+The data blocks follow the daylog section. They are separated by deveral empty lines. Data blocks are numbered starting from 0. So, the first data block can be detected by a line called `"Data Block 0"`. A number of lines follow containing important sensor data related information, see below:
+
+```
+Data Block 0
+Start Time = 01/09/2008 00:01:00
+Stop Time = 01/09/2009 00:01:00
+Logging rate = 30
+Resolution = 12
+Data points available = 591736
+Date/Time Stamp,Pressure
+```
+
+In particular, the number of "data points available" can be useful as it allows us to identify the start and the end of block easily. Let's call it _n_, in our example above `n = 591736`. And also let's say that this line has number `i`. The column names of the data block are defined in the line `i+1` and are comma separated. The sensor variable(s) is/are defined next the "Date/Time Stamp,". In example above we know that the data block refers to `"Pressure"` values. In case of acceleration data, we will have three variables: `"Gee X,Gee Y, Gee Z"`. The last line of the data block has number `i+1+n`.
+
+A second data block, `Data Block 1`, can start after the end of the first data block. The two data blocks are separated by several empty lines.
+
+Notice that the number of measurements per time unit is sensor dependent. Here below an example from a tag measuring pressure and temperature:
+
+```
+Data Block 0
+Start Time = 01/09/2008 00:01:00
+Stop Time = 01/09/2009 00:01:00
+Logging rate = 30
+Resolution = 12
+Data points available = 591736
+Date/Time Stamp,Pressure
+01/09/2008 00:01:00,1.37
+01/09/2008 00:01:30,1.37
+01/09/2008 00:02:00,1.37
+01/09/2008 00:02:30,1.37
+...
+```
+
+```
+Data Block 1
+Start Time = 01/09/2008 00:01:00
+Stop Time = 01/09/2009 00:01:00
+Logging rate = 300
+Resolution = 12
+Data points available = 59172
+Date/Time Stamp,Temp
+01/09/2008 00:01:00,20.813
+01/09/2008 00:06:00,20.797
+01/09/2008 00:11:00,20.797
+01/09/2008 00:16:00,20.797
+...
+```
+
+Notice how the logging rate is the number of seconds between two measurements: 30 seconds for pressure and 5 minutes, or 300s, for temperature.
+
+## Issues
+
+Here below a list of issues found while reading file `A15881_04-09-2020.csv`. Even if we can exclude this file from being imported, it gives us an idea about the reasons behind potential parsing errors.
+
+- One or more commas at the end of each line. A cleaning was performed along the entire file by removing the regex pattern `",{5,}"` at each line.
+- Data block 0 doesn't exists, only `Data block 1`.
+- The datetime format is not constant along the data block. Both `d/m/y H:M` and `d/m/y H:M:S` are used. 
+- Some datetime values are not unique, but repeated in multiple rows. It occurs in rows with datetime format `d/m/y H:M`. Seconds can be added by assessing the number of rows per datetime: if there are 30 rows per minute, the datetime values are separated by 2 seconds, if 60 rows are present, they are separated by 1 second.

@@ -1,0 +1,108 @@
+---
+title: "Archival tags data structure"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Archival tags data structure}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Archival tag data structure
+
+Archival tag data are typically **text files** created by tag manufacturers' specific software.
+
+The content of these files could vary a lot. However, we can find three typical sections:
+- metadata
+- daylog
+- data blocks
+
+### Metadata
+
+Metadata contain general information about the tag (`tagID`), the number of sensors, software versions and start/end of deployment. Notice that the manufacturer is not always mentioned in the metadata. We found that the most important information to parse archival tag text files are:
+
+- Firmware Version Number
+- Firmware Build Level
+
+Our experience tells us that different firmware version-build levels can lead to very different data formats.
+
+Metadata section starts always at the very begin of the file. Here below an example of metadata related to a G5pdst tag ([Cefas technology](https://cefastechnology.co.uk/)) containing two sensors:
+
+```
+Comment :- NOTE times are BST, as tag clock was set to BST
+
+The following data are the ID block contents
+Firmware Version No,2
+Firmware Build Level,70
+
+
+The following data are the Tag notebook contents
+Mission Day,211
+Last Deployment Date,26/08/2008 17:00:00
+Deployed by Host Version, 3. 9. 0
+Downloaded by Host Version,5.7.0
+Last Clock Set Date,19/08/2008 15:33:00
+
+The following data are the Lifetime notebook contents
+Tag ID,A03486
+Pressure Range ,100
+No of sensors ,2
+```
+
+The type of sensors (pressure, temperature, ...) is NOT (always) explicitly and correctly mentioned in the metadata. For this reason we do not recommend to infer this information from the metadata.
+
+### Daylog
+
+The daylog section contains some general information at day level. It's important to know also that this section is not always present.
+
+Example from a G5pdst tag ([Cefas technology](https://cefastechnology.co.uk/)):
+
+```
+The following data are the Daylog contents
+Mission Day,Date,Max Temp,Min Temp,Max Depth,Min Depth,Batt Volts
+0,26/08/2008,28.094,23.891,0.62,0.12,3.13
+1,27/08/2008,29.406,23.313,1.37,0.12,3.13
+```
+
+### Data blocks
+
+The data blocks contain the sensor information. At the moment we have encountered files containing one or two data blocks at most, i.e. tags with one or two sensors.
+
+Here below the first lines from the two data blocks of a G5pdst tag ([Cefas technology](https://cefastechnology.co.uk/)).
+
+First data block containing pressure data:
+
+```
+Data Block 0
+Start Time = 01/09/2008 00:01:00
+Stop Time = 01/09/2009 00:01:00
+Logging rate = 30
+Resolution = 12
+Data points available = 591736
+Date/Time Stamp,Pressure
+01/09/2008 00:01:00,1.37
+01/09/2008 00:01:30,1.37
+01/09/2008 00:02:00,1.37
+```
+
+Second data block containing temperature (`Temp` column) data:
+
+```
+Data Block 1
+Start Time = 01/09/2008 00:01:00
+Stop Time = 01/09/2009 00:01:00
+Logging rate = 300
+Resolution = 12
+Data points available = 59172
+Date/Time Stamp,Temp
+01/09/2008 00:01:00,20.813
+01/09/2008 00:06:00,20.797
+01/09/2008 00:11:00,20.797
+...
+```
