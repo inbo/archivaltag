@@ -1,0 +1,38 @@
+# archivaltag
+
+The goal of archivaltag is to provide information to read archival tag
+data. Such data are stored differently depending on the manufacturer and
+the model. Also, the data are different depending on the sensors built
+in.
+
+## Installation
+
+You can install the development version of archivaltag from
+[GitHub](https://github.com/) with:
+
+``` r
+
+# install.packages("devtools")
+devtools::install_github("inbo/archivaltag")
+```
+
+However, as reading R functions will be not developed at this stage, no
+real installation is needed. Check the vignette online for more
+information about reading data files of archival tags.
+
+# Package index
+
+## All functions
+
+- [`read_file()`](https://inbo.github.io/archivaltag/reference/read_file.md)
+  : Read archival tag sensor data files.
+- [`supported_tags`](https://inbo.github.io/archivaltag/reference/supported_tags.md)
+  : Supported manufacturers, models and sensors
+
+# Articles
+
+### All vignettes
+
+- [Archival tags data
+  structure](https://inbo.github.io/archivaltag/articles/archival-tags-data-structure.md):
+- [G5pdst](https://inbo.github.io/archivaltag/articles/G5pdst.md):

@@ -1,42 +1,16 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://inbo.github.io/archivaltag/404.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/archivaltag/CODE_OF_CONDUCT.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/archivaltag/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/archivaltag/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/archivaltag/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/archivaltag/articles/G5pdst.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/archivaltag/articles/archival-tags-data-structure.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/archivaltag/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/archivaltag/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/archivaltag/index.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/archivaltag/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/archivaltag/reference/read_file.html</loc>
-  </url>
-  <url>
-    <loc>https://inbo.github.io/archivaltag/reference/supported_tags.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://inbo.github.io/archivaltag/404.html</loc></url>
+<url><loc>https://inbo.github.io/archivaltag/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://inbo.github.io/archivaltag/CONTRIBUTING.html</loc></url>
+<url><loc>https://inbo.github.io/archivaltag/LICENSE-text.html</loc></url>
+<url><loc>https://inbo.github.io/archivaltag/LICENSE.html</loc></url>
+<url><loc>https://inbo.github.io/archivaltag/articles/G5pdst.html</loc></url>
+<url><loc>https://inbo.github.io/archivaltag/articles/archival-tags-data-structure.html</loc></url>
+<url><loc>https://inbo.github.io/archivaltag/articles/index.html</loc></url>
+<url><loc>https://inbo.github.io/archivaltag/authors.html</loc></url>
+<url><loc>https://inbo.github.io/archivaltag/index.html</loc></url>
+<url><loc>https://inbo.github.io/archivaltag/reference/index.html</loc></url>
+<url><loc>https://inbo.github.io/archivaltag/reference/read_file.html</loc></url>
+<url><loc>https://inbo.github.io/archivaltag/reference/supported_tags.html</loc></url>
 </urlset>
+
